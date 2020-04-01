@@ -57,27 +57,28 @@ module Zoom
       end
 
       def webinar_panelists_list(*args)
-        # TODO: implement webinar_panelists_list
-        # options = Utils.extract_options!(args)
-        raise Zoom::NotImplemented, 'webinar_panelists_list is not yet implemented'
+        params = Zoom::Params.new(Utils.extract_options!(args))
+        params.require(:id)
+        Utils.parse_response self.class.get("/webinars/#{params[:id]}/panelists", headers: request_headers)
       end
 
       def webinar_panelist_add(*args)
-        # TODO: implement webinar_panelist_add
-        # options = Utils.extract_options!(args)
-        raise Zoom::NotImplemented, 'webinar_panelist_add is not yet implemented'
+        params = Zoom::Params.new(Utils.extract_options!(args))
+        params.require(:id)
+              .permit(panelists: [])
+        Utils.parse_response self.class.post("/webinars/#{params[:id]}/panelists", body: params.except(:id).to_json, headers: request_headers)
       end
 
       def webinar_panelists_delete_all(*args)
-        # TODO: implement webinar_panelists_delete_all
-        # options = Utils.extract_options!(args)
-        raise Zoom::NotImplemented, 'webinar_panelists_delete_all is not yet implemented'
+        params = Zoom::Params.new(Utils.extract_options!(args))
+        params.require(:id)
+        Utils.parse_response self.class.delete("/webinars/#{params[:id]}/panelists", query: params.except(:id).to_json, headers: request_headers)
       end
 
       def webinar_panelist_delete(*args)
-        # TODO: implement webinar_panelist_delete
-        # options = Utils.extract_options!(args)
-        raise Zoom::NotImplemented, 'webinar_panelist_delete is not yet implemented'
+        params = Zoom::Params.new(Utils.extract_options!(args))
+        params.require(:id, :panelist_id)
+        Utils.parse_response self.class.delete("/webinars/#{params[:id]}/panelists/#{params[:panelist_id]}", query: params.except(:id, :panelist_id).to_json, headers: request_headers)
       end
 
       def webinar_registrants_list(*args)
